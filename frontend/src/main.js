@@ -1,19 +1,39 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const React = require('react');
+const ReactDOMServer = require('react-dom/server');
 
-function createWindow () {
+// 定义 React 组件
+const App = () => (
+    React.createElement('div', null,
+        React.createElement('h1', null, 'Welcome to PureVault Demo'),
+        React.createElement('p', null, 'This is a simple demo of Electron and React integration.')
+    )
+);
+
+// 渲染 React 组件为 HTML 字符串
+const renderReactApp = () => {
+    return ReactDOMServer.renderToString(React.createElement(App));
+};
+
+// 创建 Electron 窗口
+const createWindow = () => {
     const mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
-            preload: path.join(__dirname, 'renderer.js'),
-            nodeIntegration: true
+            contextIsolation: true,
+            enableRemoteModule: false,
+            nodeIntegration: false,
+            preload: path.join(__dirname, 'preload.js') // 确保 preload.js 存在
         }
     });
 
-    mainWindow.loadURL(`file://${path.join(__dirname, '../public/index.html')}`);
-}
+    // 加载内联 HTML 内容
+    mainWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(renderReactApp())}`);
+};
 
+// Electron 应用启动
 app.whenReady().then(() => {
     createWindow();
 
