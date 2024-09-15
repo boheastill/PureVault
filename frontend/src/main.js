@@ -1,4 +1,8 @@
-const { app } = require('electron');
+require('@babel/register')({
+    presets: ['@babel/preset-env', '@babel/preset-react']
+});
+
+const { app, BrowserWindow } = require('electron');
 const { createWindow } = require('./windowManager');
 // 负责 Electron 应用的启动逻辑。
 app.whenReady().then(() => {

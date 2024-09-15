@@ -1,8 +1,8 @@
-const React = require('react');
-const ReactDOMServer = require('react-dom/server');
-const App = require('./AppComponent');
+// renderUtils.js
+import React from 'react';
+import ReactDOMServer from 'react-dom/server'; // 确保导入了 ReactDOMServer
+import App from './AppComponent';
 
-// 负责将 React 组件渲染为 HTML 字符串。
-const renderUtils = () => ReactDOMServer.renderToString(React.createElement(App));
-
-module.exports = { renderReactApp: renderUtils };
+export const renderReactApp = () => {
+  return ReactDOMServer.renderToString(<App />);
+};
