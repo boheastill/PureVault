@@ -2,9 +2,9 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: './src/renderer.js',
+    entry: './src/main.js',
     output: {
-        filename: 'renderer.js',
+        filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
     },
     module: {
@@ -13,7 +13,10 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: 'babel-loader'
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env', '@babel/preset-react']
+                    }
                 }
             }
         ]
@@ -24,11 +27,11 @@ module.exports = {
         })
     ],
     resolve: {
-        extensions: ['.js', '.jsx']
+        extensions: ['.js', '.jsx'],
+        fallback: {
+            "path": require.resolve("path-browserify"),
+            "fs": false // `fs` 模块在浏览器中通常不需要
+        }
     },
-    devServer: {
-        contentBase: path.join(__dirname, 'dist'),
-        compress: true,
-        port: 9000
-    }
+    mode: 'development' // 设置 Webpack 模式为 development
 };
