@@ -12,9 +12,7 @@ const App = () => (
 );
 
 // 渲染 React 组件为 HTML 字符串
-const renderReactApp = () => {
-    return ReactDOMServer.renderToString(React.createElement(App));
-};
+const renderReactApp = () => ReactDOMServer.renderToString(React.createElement(App));
 
 // 创建 Electron 窗口
 const createWindow = () => {
@@ -24,8 +22,8 @@ const createWindow = () => {
         webPreferences: {
             contextIsolation: true,
             enableRemoteModule: false,
-            nodeIntegration: false,
-            preload: path.join(__dirname, 'preload.js') // 确保 preload.js 存在
+            nodeIntegration: false
+            // preload: path.join(__dirname, 'preload.js') // 移除 preload 选项
         }
     });
 
